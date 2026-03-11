@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,16 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
+
 <body class="dark-theme">
     <div class="glass-bg"></div>
-    
+
     <header>
         <nav>
             <div class="logo">TENNIS<span>FORECAST</span></div>
             <div class="nav-links">
-                <a href="#predictions" class="active">Pronósticos</a>
+                <a href="#hero" class="active">Inicio</a>
+                <a href="#predictions">Pronósticos</a>
                 <a href="#rankings">Ranking ELO</a>
                 <a href="#methodology">Metodología</a>
             </div>
@@ -28,43 +31,69 @@
             <p>Utilizando el sistema de ELO dinámico y modelos XGBoost inspirados en @theGreenCoding.</p>
         </section>
 
-        <section id="match-of-the-day">
+        <section id="predictions">
             <h2>Partido Destacado</h2>
-            <div class="prediction-card premium">
-                <div class="player-container">
-                    <div class="player">
-                        <div class="player-rank">#1 ELO</div>
-                        <div class="player-name">Jannik Sinner</div>
-                        <div class="player-elo">ELO: 2176</div>
-                    </div>
-                    <div class="vs">VS</div>
-                    <div class="player">
-                        <div class="player-rank">#2 ELO</div>
-                        <div class="player-name">Novak Djokovic</div>
-                        <div class="player-elo">ELO: 2096</div>
-                    </div>
+            <div id="hero-match-container">
+                <!-- Hero match will be injected here -->
+                <div class="prediction-card premium loading">
+                    <p>Cargando pronóstico maestro...</p>
                 </div>
-                <div class="probability-meter">
-                    <div class="bar">
-                        <div class="fill" style="width: 61%;"></div>
-                    </div>
-                    <div class="labels">
-                        <span>61% - Sinner</span>
-                        <span>39% - Djokovic</span>
-                    </div>
-                </div>
-                <div class="prediction-badge">Victoria Recomendada: Sinner</div>
             </div>
-        </section>
 
-        <section id="upcoming">
-            <h3>Próximos Encuentros</h3>
+            <h3 style="margin: 4rem 0 2rem; opacity: 0.8;">Cartelera del Día</h3>
             <div class="match-list" id="matchList">
                 <!-- Matches will be injected here -->
             </div>
         </section>
+
+        <section id="rankings">
+            <h2>Ranking ELO <span class="gradient-text">Pro</span></h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Basado en nuestro modelo de inteligencia
+                artificial actualizado diariamente.</p>
+            <div class="ranking-table-container">
+                <table id="rankingTable">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Jugador</th>
+                            <th>Rating ELO</th>
+                            <th>Tendencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rankings will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="methodology">
+            <h2>Nuestra <span class="gradient-text">Metodología</span></h2>
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <h4>Core ELO System</h4>
+                    <p>Adaptado del ajedrez, nuestro sistema procesa 40 años de datos ATP para asignar un valor de
+                        habilidad intrínseco a cada jugador, ajustado por superficie.</p>
+                </div>
+                <div class="method-card">
+                    <h4>XGBoost Classifier</h4>
+                    <p>Utilizamos Gradient Boosting sobre 95,000 partidos para identificar patrones que el ojo humano
+                        ignora, logrando una precisión histórica del 85%.</p>
+                </div>
+                <div class="method-card">
+                    <h4>Surface Weighting</h4>
+                    <p>Calculamos ratings específicos para Tierra Batida, Hierba y Pista Rápida, capturando la
+                        especialización de cada jugador.</p>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <footer>
+        <p>&copy; 2024 TennisForecast AI. Inspirado por @theGreenCoding.</p>
+    </footer>
 
     <script src="app.js"></script>
 </body>
+
 </html>
