@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchData() {
         try {
             // Fetch Matches
-            const matchRes = await fetch('http://localhost:8888/matches');
+            const matchRes = await fetch('http://localhost:8999/matches');
             const matches = await matchRes.json();
 
             if (matches && matches.length > 0) {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Fetch Rankings
-            const rankRes = await fetch('http://localhost:8888/rankings');
+            const rankRes = await fetch('http://localhost:8999/rankings');
             const rankings = await rankRes.json();
             renderRankings(rankings);
 
@@ -47,15 +47,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderHeroMatch(match) {
         heroMatchContainer.innerHTML = `
             <div class="prediction-card premium">
+                <div style="font-size: 0.8rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; text-align: center;">
+                    ${match.tournament} — ${match.date}
+                </div>
                 <div class="player-container">
                     <div class="player">
-                        <div class="player-rank">#1 ELO</div>
+                        <div class="player-rank">ATP PRO</div>
                         <div class="player-name">${match.player1}</div>
                         <div class="player-elo">ELO: ${match.elo1}</div>
                     </div>
                     <div class="vs">VS</div>
                     <div class="player">
-                        <div class="player-rank">#2 ELO</div>
+                        <div class="player-rank">ATP PRO</div>
                         <div class="player-name">${match.player2}</div>
                         <div class="player-elo">ELO: ${match.elo2}</div>
                     </div>
@@ -91,6 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.opacity = '0';
 
             card.innerHTML = `
+                <div style="font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                    <span>${match.tournament}</span>
+                    <span>${match.date}</span>
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <div>
                         <div style="font-weight: 700;">${match.player1}</div>
