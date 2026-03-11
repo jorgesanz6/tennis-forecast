@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchData() {
         try {
             // Fetch Matches
-            const matchRes = await fetch('http://localhost:8000/matches');
+            const matchRes = await fetch('http://localhost:8888/matches');
             const matches = await matchRes.json();
 
             if (matches && matches.length > 0) {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Fetch Rankings
-            const rankRes = await fetch('http://localhost:8000/rankings');
+            const rankRes = await fetch('http://localhost:8888/rankings');
             const rankings = await rankRes.json();
             renderRankings(rankings);
 

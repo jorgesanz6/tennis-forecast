@@ -48,26 +48,30 @@ def get_matches():
     global cached_matches
     # Siempre intentamos sincronizar si no hay datos
     if not cached_matches:
-        raw_matches = fetcher.get_upcoming_matches()
-        predictions = []
-        for m in raw_matches:
-            r1 = elo_manager.get_rating(m["player1"], m["surface"])
-            r2 = elo_manager.get_rating(m["player2"], m["surface"])
-            prob1 = elo_manager.calculate_expected_score(r1, r2)
-            prob2 = 1 - prob1
-            
-            predictions.append({
-                "player1": m["player1"],
-                "player2": m["player2"],
-                "prob1": round(prob1 * 100, 2),
-                "prob2": round(prob2 * 100, 2),
-                "elo1": round(r1, 0),
-                "elo2": round(r2, 0),
-                "recommended_winner": m["player1"] if prob1 > prob2 else m["player2"],
-                "surface": m["surface"],
-                "tournament": m["tournament"]
-            })
-        cached_matches = predictions
+        try:
+            raw_matches = fetcher.get_upcoming_matches()
+            predictions = []
+            for m in raw_matches:
+                r1 = elo_manager.get_rating(m["player1"], m["surface"])
+                r2 = elo_manager.get_rating(m["player2"], m["surface"])
+                prob1 = elo_manager.calculate_expected_score(r1, r2)
+                prob2 = 1 - prob1
+                
+                predictions.append({
+                    "player1": m["player1"],
+                    "player2": m["player2"],
+                    "prob1": round(prob1 * 100, 2),
+                    "prob2": round(prob2 * 100, 2),
+                    "elo1": round(r1, 0),
+                    "elo2": round(r2, 0),
+                    "recommended_winner": m["player1"] if prob1 > prob2 else m["player2"],
+                    "surface": m["surface"],
+                    "tournament": m["tournament"]
+                })
+            cached_matches = predictions
+        except Exception as e:
+            print(f"Error in backend processing: {e}")
+            return []
     return cached_matches
 
 @app.get("/rankings")

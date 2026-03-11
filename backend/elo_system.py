@@ -10,7 +10,9 @@ class EloSystem:
     def get_rating(self, player_id, surface=None):
         if player_id not in self.ratings:
             self.ratings[player_id] = self.initial_rating
-            self.surface_ratings[player_id] = {"Hard": 1500, "Clay": 1500, "Grass": 1500}
+        
+        if player_id not in self.surface_ratings:
+            self.surface_ratings[player_id] = {"Pista Rápida": 1500, "Tierra Batida": 1500, "Hierba": 1500}
         
         if surface and surface in self.surface_ratings[player_id]:
             # Weight: 70% surface specific, 30% general (common approach)
