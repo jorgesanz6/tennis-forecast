@@ -1,0 +1,205 @@
+:root {
+    --bg-dark: #0a0b10;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --accent: #00f2fe;
+    --accent-alt: #4facfe;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a8;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+.glass-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, #1a1b2e 0%, #0a0b10 100%);
+    z-index: -1;
+}
+
+header {
+    padding: 2rem 5%;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--accent);
+}
+
+main {
+    padding: 2rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#hero {
+    text-align: center;
+    margin-bottom: 4rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.prediction-card.premium {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.prediction-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0,242,254,0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.player-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.player {
+    text-align: center;
+}
+
+.player-rank {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.player-name {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.player-elo {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.vs {
+    font-size: 1.5rem;
+    font-weight: 800;
+    opacity: 0.3;
+}
+
+.probability-meter {
+    margin-bottom: 2rem;
+}
+
+.bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.fill {
+    height: 100%;
+    background: var(--gradient);
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.labels {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.prediction-badge {
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .player-container { flex-direction: column; gap: 2rem; }
+}
