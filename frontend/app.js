@@ -11,42 +11,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const upcomingMatches = [
-        { p1: "Carlos Alcaraz", p2: "Daniil Medvedev", p1Elo: 2003, p2Elo: 1985, prob1: 54, surface: "Hard" },
-        { p1: "Rafa Nadal", p2: "Casper Ruud", p1Elo: 2150, p2Elo: 1910, prob1: 78, surface: "Clay" },
-        { p1: "Alexander Zverev", p2: "Stefanos Tsitsipas", p1Elo: 1940, p2Elo: 1925, prob1: 51, surface: "Hard" }
-    ];
-
     const matchList = document.getElementById('matchList');
+    const heroCard = document.querySelector('#match-of-the-day .prediction-card');
 
-    upcomingMatches.forEach((match, index) => {
-        const card = document.createElement('div');
-        card.className = 'prediction-card small';
-        card.style.animationDelay = `${index * 0.2}s`;
+    async function fetchMatches() {
+        try {
+            // Tentamos conectar con el backend local
+            const response = await fetch('http://localhost:8000/matches');
+            if (!response.ok) throw new Error('Backend not responding');
+            const matches = await response.json();
 
-        card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: 16px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
-                <div style="text-align: left;">
-                    <div style="font-weight: 700;">${match.p1}</div>
-                    <div style="font-size: 0.8rem; color: #a0a0a8;">ELO: ${match.p1Elo}</div>
+            if (matches && matches.length > 0) {
+                renderMatches(matches);
+                updateHero(matches[0]);
+            } else {
+                renderEmpty();
+            }
+        } catch (error) {
+            console.error('Error fetching matches:', error);
+            renderError();
+        }
+    }
+
+    function updateHero(match) {
+        heroCard.innerHTML = `
+            <div class="player-container">
+                <div class="player">
+                    <div class="player-rank">#1 PROB</div>
+                    <div class="player-name">${match.player1}</div>
+                    <div class="player-elo">ELO: ${match.elo1}</div>
                 </div>
-                <div style="font-weight: 800; opacity: 0.3;">VS</div>
-                <div style="text-align: right;">
-                    <div style="font-weight: 700;">${match.p2}</div>
-                    <div style="font-size: 0.8rem; color: #a0a0a8;">ELO: ${match.p2Elo}</div>
+                <div class="vs">VS</div>
+                <div class="player">
+                    <div class="player-rank">#2 PROB</div>
+                    <div class="player-name">${match.player2}</div>
+                    <div class="player-elo">ELO: ${match.elo2}</div>
                 </div>
             </div>
             <div class="probability-meter">
-                <div class="bar" style="height: 6px;">
-                    <div class="fill" style="width: ${match.prob1}%; height: 6px;"></div>
+                <div class="bar">
+                    <div class="fill" style="width: ${match.prob1}%;"></div>
                 </div>
-                <div class="labels" style="font-size: 0.8rem;">
-                    <span>${match.prob1}%</span>
-                    <span>${100 - match.prob1}%</span>
+                <div class="labels">
+                    <span>${match.prob1}% - ${match.player1}</span>
+                    <span>${match.prob2}% - ${match.player2}</span>
                 </div>
             </div>
+            <div class="prediction-badge">Victoria Recomendada: ${match.recommended_winner}</div>
         `;
+    }
 
-        matchList.appendChild(card);
-    });
+    function renderMatches(matches) {
+        matchList.innerHTML = '';
+        matches.slice(1).forEach((match, index) => {
+            const card = document.createElement('div');
+            card.className = 'prediction-card small';
+            card.style.cssText = `
+                background: var(--card-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 16px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                animation: fadeInUp 0.5s ease-out forwards;
+                animation-delay: ${index * 0.1}s;
+                opacity: 0;
+            `;
+
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <div style="font-weight: 700;">${match.player1}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">ELO: ${match.elo1}</div>
+                    </div>
+                    <div style="font-weight: 800; opacity: 0.3;">VS</div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 700;">${match.player2}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">ELO: ${match.elo2}</div>
+                    </div>
+                </div>
+                <div class="probability-meter">
+                    <div class="bar" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
+                        <div class="fill" style="width: ${match.prob1}%; height: 100%; background: var(--gradient);"></div>
+                    </div>
+                    <div class="labels" style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 5px; font-weight: 600;">
+                        <span>${match.prob1}%</span>
+                        <span>${match.prob2}%</span>
+                    </div>
+                </div>
+            `;
+            matchList.appendChild(card);
+        });
+    }
+
+    function renderEmpty() {
+        matchList.innerHTML = '<p style="text-align:center; color: var(--text-secondary);">No hay partidos programados para hoy.</p>';
+    }
+
+    function renderError() {
+        matchList.innerHTML = '<p style="text-align:center; color: #ff4b2b;">Inicia el backend (uvicorn main:app) para ver datos reales.</p>';
+    }
+
+    fetchMatches();
 });

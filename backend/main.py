@@ -7,6 +7,19 @@ from data_fetcher import DataFetcher
 import os
 
 app = FastAPI(title="Tennis Forecast API")
+from fastapi.middleware.cors import CORSMiddleware
+import os
+
+app = FastAPI(title="Tennis Forecast API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 elo_manager = EloSystem(k_factor=28)
 # Use the user provided key or an environment variable
 API_KEY = "ab7ee06161msh16b021a83ae7a8dp1c03dcjsn51074bf9408e"
